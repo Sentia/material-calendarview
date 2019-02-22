@@ -5,15 +5,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
+
+import org.threeten.bp.LocalDate;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.threeten.bp.LocalDate;
 
 /**
  * Pager adapter backing the calendar view
@@ -27,6 +30,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
 
   @NonNull private TitleFormatter titleFormatter = TitleFormatter.DEFAULT;
   private Integer color = null;
+  private Integer monthTitleTextAppearance = null;
   private Integer dateTextAppearance = null;
   private Integer weekDayTextAppearance = null;
   @ShowOtherDates
@@ -41,6 +45,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
   private List<DayViewDecorator> decorators = new ArrayList<>();
   private List<DecoratorResult> decoratorResults = null;
   private boolean selectionEnabled = true;
+  boolean showMonthTitle;
   boolean showWeekDays;
 
   CalendarPagerAdapter(MaterialCalendarView mcv) {
@@ -83,6 +88,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
   public CalendarPagerAdapter<?> migrateStateAndReturn(CalendarPagerAdapter<?> newAdapter) {
     newAdapter.titleFormatter = titleFormatter;
     newAdapter.color = color;
+    newAdapter.monthTitleTextAppearance = monthTitleTextAppearance;
     newAdapter.dateTextAppearance = dateTextAppearance;
     newAdapter.weekDayTextAppearance = weekDayTextAppearance;
     newAdapter.showOtherDates = showOtherDates;
@@ -150,6 +156,9 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     if (color != null) {
       pagerView.setSelectionColor(color);
     }
+    if (monthTitleTextAppearance != null) {
+      pagerView.setMonthTitleTextAppearance(monthTitleTextAppearance);
+    }
     if (dateTextAppearance != null) {
       pagerView.setDateTextAppearance(dateTextAppearance);
     }
@@ -167,6 +176,14 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     pagerView.setDayViewDecorators(decoratorResults);
 
     return pagerView;
+  }
+
+  public void setShowMonthTitle(boolean showMonthTitle) {
+    this.showMonthTitle = showMonthTitle;
+  }
+
+  public boolean isShowMonthTitle() {
+    return showMonthTitle;
   }
 
   public void setShowWeekDays(boolean showWeekDays) {
@@ -204,6 +221,16 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     this.color = color;
     for (V pagerView : currentViews) {
       pagerView.setSelectionColor(color);
+    }
+  }
+
+  public void setMonthTitleTextAppearance(int taId) {
+    if (taId == 0) {
+      return;
+    }
+    this.monthTitleTextAppearance = taId;
+    for (V pagerView : currentViews) {
+      pagerView.setMonthTitleTextAppearance(taId);
     }
   }
 
@@ -366,6 +393,10 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
   @NonNull
   public List<CalendarDay> getSelectedDates() {
     return Collections.unmodifiableList(selectedDates);
+  }
+
+  protected int getMonthTitleTextAppearance() {
+    return monthTitleTextAppearance == null ? 0 : monthTitleTextAppearance;
   }
 
   protected int getDateTextAppearance() {

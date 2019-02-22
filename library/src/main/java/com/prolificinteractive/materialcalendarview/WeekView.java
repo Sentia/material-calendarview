@@ -2,9 +2,11 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
-import java.util.Collection;
+
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
+
+import java.util.Collection;
 
 /**
  * Display a week of {@linkplain DayView}s and
@@ -17,7 +19,7 @@ import org.threeten.bp.LocalDate;
       final CalendarDay firstViewDay,
       final DayOfWeek firstDayOfWeek,
       final boolean showWeekDays) {
-    super(view, firstViewDay, firstDayOfWeek, showWeekDays);
+    super(view, firstViewDay, firstDayOfWeek, false, showWeekDays);
   }
 
   @Override protected void buildDayViews(

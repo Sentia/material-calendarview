@@ -1,22 +1,27 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.temporal.TemporalField;
 import org.threeten.bp.temporal.WeekFields;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SHOW_DEFAULTS;
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showOtherMonths;
@@ -26,8 +31,11 @@ abstract class CalendarPagerView extends ViewGroup
 
   protected static final int DEFAULT_DAYS_IN_WEEK = 7;
   protected static final int DEFAULT_MAX_WEEKS = 6;
+  protected static final int MONTH_TITLE_ROW = 1;
   protected static final int DAY_NAMES_ROW = 1;
+  private static final int DEFAULT_MONTH_TITLE_LEFT_PADDING = 16;
 
+  private final MonthTitleView monthTitleView;
   private final ArrayList<WeekDayView> weekDayViews = new ArrayList<>();
   private final ArrayList<DecoratorResult> decoratorResults = new ArrayList<>();
   private final DayOfWeek firstDayOfWeek;
@@ -37,6 +45,7 @@ abstract class CalendarPagerView extends ViewGroup
   private CalendarDay minDate = null;
   private CalendarDay maxDate = null;
   protected boolean showWeekDays;
+  protected boolean showMonthTitle;
 
   private final Collection<DayView> dayViews = new ArrayList<>();
 
@@ -44,21 +53,34 @@ abstract class CalendarPagerView extends ViewGroup
       @NonNull MaterialCalendarView view,
       CalendarDay firstViewDay,
       DayOfWeek firstDayOfWeek,
+      boolean showMonthTitle,
       boolean showWeekDays) {
     super(view.getContext());
 
     this.mcv = view;
     this.firstViewDay = firstViewDay;
     this.firstDayOfWeek = firstDayOfWeek;
+    this.showMonthTitle = showMonthTitle;
     this.showWeekDays = showWeekDays;
 
     setClipChildren(false);
     setClipToPadding(false);
 
+    if (showMonthTitle) {
+      this.monthTitleView = buildMonthTitle(firstViewDay);
+    } else {
+      this.monthTitleView = null;
+    }
     if (showWeekDays) {
       buildWeekDays(resetAndGetWorkingCalendar());
     }
     buildDayViews(dayViews, resetAndGetWorkingCalendar());
+  }
+
+  private MonthTitleView buildMonthTitle(CalendarDay currentMonth) {
+    MonthTitleView monthTitleView = new MonthTitleView(getContext(), currentMonth);
+    addView(monthTitleView, new SectionLayout());
+    return monthTitleView;
   }
 
   private void buildWeekDays(LocalDate calendar) {
@@ -121,6 +143,12 @@ abstract class CalendarPagerView extends ViewGroup
   public void setDateTextAppearance(int taId) {
     for (DayView dayView : dayViews) {
       dayView.setTextAppearance(getContext(), taId);
+    }
+  }
+
+  public void setMonthTitleTextAppearance(int taId) {
+    if (monthTitleView != null) {
+      monthTitleView.setTextAppearance(getContext(), taId);
     }
   }
 
@@ -252,8 +280,15 @@ abstract class CalendarPagerView extends ViewGroup
     setMeasuredDimension(specWidthSize, specHeightSize);
 
     int count = getChildCount();
+    int i = 0;
 
-    for (int i = 0; i < count; i++) {
+    if (showMonthTitle) {
+      final View child = getChildAt(i);
+      child.measure(specWidthSize, specHeightSize);
+      i++;
+    }
+
+    for (; i < count; i++) {
       final View child = getChildAt(i);
 
       int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
@@ -289,7 +324,19 @@ abstract class CalendarPagerView extends ViewGroup
     int childLeft = parentLeft;
     int childRight = parentRight;
 
-    for (int i = 0; i < count; i++) {
+    int i = 0;
+
+    if (showMonthTitle) {
+      final View child = getChildAt(i);
+      final int width = child.getMeasuredWidth();
+      final int height = child.getMeasuredHeight();
+      final int leftPadding = (int)convertDpToPixel(DEFAULT_MONTH_TITLE_LEFT_PADDING, getContext());
+      child.layout(leftPadding, childTop, parentWidth, childTop + height);
+      childTop += height;
+      i++;
+    }
+
+    for (; i < count; i++) {
       final View child = getChildAt(i);
 
       final int width = child.getMeasuredWidth();
@@ -304,7 +351,7 @@ abstract class CalendarPagerView extends ViewGroup
       }
 
       //We should warp every so many children
-      if (i % DEFAULT_DAYS_IN_WEEK == (DEFAULT_DAYS_IN_WEEK - 1)) {
+      if ((showMonthTitle ? (i-1) : i) % DEFAULT_DAYS_IN_WEEK == (DEFAULT_DAYS_IN_WEEK - 1)) {
         childLeft = parentLeft;
         childRight = parentRight;
         childTop += height;
@@ -354,6 +401,12 @@ abstract class CalendarPagerView extends ViewGroup
     return firstViewDay;
   }
 
+  protected static class SectionLayout extends MarginLayoutParams {
+    public SectionLayout() {
+      super(MATCH_PARENT, WRAP_CONTENT);
+    }
+  }
+
   /**
    * Simple layout params class for MonthView, since every child is the same size
    */
@@ -365,5 +418,13 @@ abstract class CalendarPagerView extends ViewGroup
     public LayoutParams() {
       super(WRAP_CONTENT, WRAP_CONTENT);
     }
+  }
+
+  /**
+   * This method converts dp unit to equivalent pixels, depending on device density.
+   * https://stackoverflow.com/a/9563438/2722270
+   */
+  private static float convertDpToPixel(int dp, Context context){
+    return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
   }
 }

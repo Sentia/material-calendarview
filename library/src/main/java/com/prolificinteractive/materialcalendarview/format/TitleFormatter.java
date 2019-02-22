@@ -8,8 +8,10 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 public interface TitleFormatter {
 
   String DEFAULT_FORMAT = "LLLL yyyy";
+  String MONTH_ONLY_FORMAT = "LLLL";
 
   TitleFormatter DEFAULT = new DateFormatTitleFormatter();
+  TitleFormatter MONTH_ONLY = new DateFormatTitleFormatter(MONTH_ONLY_FORMAT);
 
   /**
    * Converts the supplied day to a suitable month/year title

@@ -16,8 +16,9 @@ import org.threeten.bp.LocalDate;
       @NonNull final MaterialCalendarView view,
       final CalendarDay month,
       final DayOfWeek firstDayOfWeek,
+      final boolean showMonthTitle,
       final boolean showWeekDays) {
-    super(view, month, firstDayOfWeek, showWeekDays);
+    super(view, month, firstDayOfWeek, showMonthTitle, showWeekDays);
   }
 
   @Override protected void buildDayViews(
@@ -41,6 +42,8 @@ import org.threeten.bp.LocalDate;
   }
 
   @Override protected int getRows() {
-    return showWeekDays ? DEFAULT_MAX_WEEKS + DAY_NAMES_ROW : DEFAULT_MAX_WEEKS;
+    return DEFAULT_MAX_WEEKS +
+            (showMonthTitle ? MONTH_TITLE_ROW : 0) +
+            (showWeekDays ? DAY_NAMES_ROW : 0);
   }
 }

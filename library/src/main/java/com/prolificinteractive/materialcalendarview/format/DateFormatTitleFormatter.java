@@ -17,6 +17,10 @@ public class DateFormatTitleFormatter implements TitleFormatter {
     this(DateTimeFormatter.ofPattern(DEFAULT_FORMAT));
   }
 
+  public DateFormatTitleFormatter(String pattern) {
+    this(DateTimeFormatter.ofPattern(pattern));
+  }
+
   /**
    * Format using a specified {@linkplain DateTimeFormatter}
    *
