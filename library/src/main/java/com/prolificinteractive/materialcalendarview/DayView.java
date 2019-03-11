@@ -218,6 +218,7 @@ public class DayView extends AppCompatCheckedTextView {
       mCircleDrawable = generateBackground(selectionColor, fadeTime, circleDrawableRect);
       setBackgroundDrawable(mCircleDrawable);
     }
+    invalidate();
   }
 
   private static Drawable generateBackground(int color, int fadeTime, Rect bounds) {
