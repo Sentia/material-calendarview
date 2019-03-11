@@ -3,6 +3,7 @@ package com.prolificinteractive.materialcalendarview;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 @SuppressLint("ViewConstructor")
@@ -22,10 +23,12 @@ public class DayBlankView extends DayView {
 
   @Override
   void applyFacade(DayViewFacade facade) {
+    Drawable backgroundDrawable;
     if (facade.isRangeMiddle()) {
-      setCustomBackground(generateRangeMiddleDrawable());
+      backgroundDrawable = generateRangeMiddleDrawable();
     } else {
-      setCustomBackground(facade.getBackgroundDrawable());
+      backgroundDrawable = facade.getBackgroundDrawable();
     }
+    setCustomBackground(backgroundDrawable);
   }
 }
