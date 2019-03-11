@@ -190,6 +190,14 @@ public class DayView extends AppCompatCheckedTextView {
   private final Rect tempRect = new Rect();
   private final Rect circleDrawableRect = new Rect();
 
+  public Rect getCircleDrawableRect() {
+    return circleDrawableRect;
+  }
+
+  public Rect getBackgroundRect() {
+    return tempRect;
+  }
+
   @Override
   protected void onDraw(@NonNull Canvas canvas) {
     if (customBackground != null) {
