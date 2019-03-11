@@ -2,6 +2,7 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +15,8 @@ public class DayViewFacade {
   private boolean isDecorated;
 
   private Drawable backgroundDrawable = null;
+  private boolean isRangeStart = false;
+  private boolean isRangeEnd = false;
   private Drawable selectionDrawable = null;
   private final LinkedList<Span> spans = new LinkedList<>();
   private boolean daysDisabled = false;
@@ -32,6 +35,16 @@ public class DayViewFacade {
       throw new IllegalArgumentException("Cannot be null");
     }
     this.backgroundDrawable = drawable;
+    isDecorated = true;
+  }
+
+  public void setRangeStart(boolean isRangeStart) {
+    this.isRangeStart = isRangeStart;
+    isDecorated = true;
+  }
+
+  public void setRangeEnd(boolean isRangeEnd) {
+    this.isRangeEnd = isRangeEnd;
     isDecorated = true;
   }
 
@@ -75,6 +88,8 @@ public class DayViewFacade {
 
   void reset() {
     backgroundDrawable = null;
+    isRangeStart = false;
+    isRangeEnd = false;
     selectionDrawable = null;
     spans.clear();
     isDecorated = false;
@@ -93,6 +108,12 @@ public class DayViewFacade {
     if (backgroundDrawable != null) {
       other.setBackgroundDrawable(backgroundDrawable);
     }
+    if (isRangeStart) {
+      other.setRangeStart(true);
+    }
+    if (isRangeEnd) {
+      other.setRangeEnd(true);
+    }
     other.spans.addAll(spans);
     other.isDecorated |= this.isDecorated;
     other.daysDisabled = daysDisabled;
@@ -108,6 +129,14 @@ public class DayViewFacade {
 
   Drawable getBackgroundDrawable() {
     return backgroundDrawable;
+  }
+
+  boolean isRangeStart() {
+    return this.isRangeStart;
+  }
+
+  boolean isRangeEnd() {
+    return this.isRangeEnd;
   }
 
   List<Span> getSpans() {
