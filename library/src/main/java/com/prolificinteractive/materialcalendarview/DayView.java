@@ -299,6 +299,11 @@ public class DayView extends AppCompatCheckedTextView {
     return layerDrawable;
   }
 
+  private Drawable generateRangeMiddleDrawable() {
+    Drawable rectDrawable = generateRectDrawable(0xfff37165);
+    rectDrawable.setBounds(tempRect);
+    return rectDrawable;
+  }
 
   /**
    * @param facade apply the facade to us
@@ -313,6 +318,8 @@ public class DayView extends AppCompatCheckedTextView {
       backgroundDrawable = generateRangeStartDrawable();
     } else if (facade.isRangeEnd()) {
       backgroundDrawable = generateRangeEndDrawable();
+    } else if (facade.isRagneMiddle()) {
+      backgroundDrawable = generateRangeMiddleDrawable();
     } else {
       backgroundDrawable = facade.getBackgroundDrawable();
     }

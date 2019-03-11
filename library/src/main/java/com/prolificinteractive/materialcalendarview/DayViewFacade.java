@@ -16,6 +16,7 @@ public class DayViewFacade {
 
   private Drawable backgroundDrawable = null;
   private boolean isRangeStart = false;
+  private boolean isRangeMiddle = false;
   private boolean isRangeEnd = false;
   private Drawable selectionDrawable = null;
   private final LinkedList<Span> spans = new LinkedList<>();
@@ -40,6 +41,11 @@ public class DayViewFacade {
 
   public void setRangeStart(boolean isRangeStart) {
     this.isRangeStart = isRangeStart;
+    isDecorated = true;
+  }
+
+  public void setRangeMiddle(boolean isRangeMiddle) {
+    this.isRangeMiddle = isRangeMiddle;
     isDecorated = true;
   }
 
@@ -89,6 +95,7 @@ public class DayViewFacade {
   void reset() {
     backgroundDrawable = null;
     isRangeStart = false;
+    isRangeMiddle = false;
     isRangeEnd = false;
     selectionDrawable = null;
     spans.clear();
@@ -110,6 +117,9 @@ public class DayViewFacade {
     }
     if (isRangeStart) {
       other.setRangeStart(true);
+    }
+    if (isRangeMiddle) {
+      other.setRangeMiddle(true);
     }
     if (isRangeEnd) {
       other.setRangeEnd(true);
@@ -133,6 +143,10 @@ public class DayViewFacade {
 
   boolean isRangeStart() {
     return this.isRangeStart;
+  }
+
+  boolean isRagneMiddle() {
+    return this.isRangeMiddle;
   }
 
   boolean isRangeEnd() {
