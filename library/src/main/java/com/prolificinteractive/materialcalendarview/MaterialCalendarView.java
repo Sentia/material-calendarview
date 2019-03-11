@@ -1136,8 +1136,8 @@ public class MaterialCalendarView extends ViewGroup {
     if (min != null) {
       currentMonth = min.isAfter(currentMonth) ? min : currentMonth;
     }
-    //int position = adapter.getIndexForDay(c);
-    //pager.setCurrentItem(position, false);
+    int position = adapter.getIndexForDay(c);
+    pager.setCurrentItem(position, false);
     updateUi();
   }
 
@@ -1472,9 +1472,9 @@ public class MaterialCalendarView extends ViewGroup {
         && allowClickDaysOutsideCurrentMonth
         && currentMonth != selectedMonth) {
       if (currentDate.isAfter(selectedDate)) {
-        goToPrevious();
+        //goToPrevious();
       } else if (currentDate.isBefore(selectedDate)) {
-        goToNext();
+        //goToNext();
       }
     }
     onDateClicked(dayView.getDate(), !dayView.isChecked());
