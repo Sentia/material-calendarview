@@ -299,7 +299,7 @@ public class DayView extends AppCompatCheckedTextView {
     return layerDrawable;
   }
 
-  private Drawable generateRangeMiddleDrawable() {
+  protected Drawable generateRangeMiddleDrawable() {
     Drawable rectDrawable = generateRectDrawable(0xfff37165);
     rectDrawable.setBounds(tempRect);
     return rectDrawable;
