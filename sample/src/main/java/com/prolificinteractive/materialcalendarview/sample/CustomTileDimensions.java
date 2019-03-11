@@ -8,13 +8,16 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayView;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by maragues on 17/06/16.
@@ -103,7 +106,8 @@ public class CustomTileDimensions extends AppCompatActivity {
     }
 
     @Override
-    public boolean shouldDecorate(CalendarDay day) {
+    public boolean shouldDecorate(DayView dayView) {
+      final CalendarDay day = dayView.getDate();
       return today.equals(day);
     }
 

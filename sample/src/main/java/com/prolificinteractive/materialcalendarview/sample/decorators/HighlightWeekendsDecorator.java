@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayView;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import org.threeten.bp.DayOfWeek;
@@ -20,7 +21,8 @@ public class HighlightWeekendsDecorator implements DayViewDecorator {
     highlightDrawable = new ColorDrawable(color);
   }
 
-  @Override public boolean shouldDecorate(final CalendarDay day) {
+  @Override public boolean shouldDecorate(DayView dayView) {
+    final CalendarDay day = dayView.getDate();
     final DayOfWeek weekDay = day.getDate().getDayOfWeek();
     return weekDay == DayOfWeek.SATURDAY || weekDay == DayOfWeek.SUNDAY;
   }

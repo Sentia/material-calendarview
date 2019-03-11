@@ -225,7 +225,7 @@ abstract class CalendarPagerView extends ViewGroup
     for (DayView dayView : dayViews) {
       facadeAccumulator.reset();
       for (DecoratorResult result : decoratorResults) {
-        if (result.decorator.shouldDecorate(dayView.getDate())) {
+        if (result.decorator.shouldDecorate(dayView)) {
           result.result.applyTo(facadeAccumulator);
         }
       }

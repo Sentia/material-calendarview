@@ -12,6 +12,7 @@ import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.graphics.drawable.shapes.RectShape;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatCheckedTextView;
@@ -30,7 +31,8 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 /**
  * Display one day of a {@linkplain MaterialCalendarView}
  */
-@SuppressLint("ViewConstructor") class DayView extends AppCompatCheckedTextView {
+@SuppressLint("ViewConstructor")
+public class DayView extends AppCompatCheckedTextView {
 
   private CalendarDay date;
   private int selectionColor = Color.GRAY;
@@ -230,6 +232,12 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 
   private static Drawable generateCircleDrawable(final int color) {
     ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
+    drawable.getPaint().setColor(color);
+    return drawable;
+  }
+
+  protected static Drawable generateRectDrawable(final int color) {
+    ShapeDrawable drawable = new ShapeDrawable(new RectShape());
     drawable.getPaint().setColor(color);
     return drawable;
   }

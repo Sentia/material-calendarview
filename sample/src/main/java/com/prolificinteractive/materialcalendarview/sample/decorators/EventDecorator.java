@@ -1,9 +1,11 @@
 package com.prolificinteractive.materialcalendarview.sample.decorators;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayView;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
+
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -21,7 +23,8 @@ public class EventDecorator implements DayViewDecorator {
   }
 
   @Override
-  public boolean shouldDecorate(CalendarDay day) {
+  public boolean shouldDecorate(DayView dayView) {
+    final CalendarDay day = dayView.getDate();
     return dates.contains(day);
   }
 

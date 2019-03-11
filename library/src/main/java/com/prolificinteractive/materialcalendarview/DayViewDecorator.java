@@ -11,7 +11,7 @@ public interface DayViewDecorator {
    * @param day {@linkplain CalendarDay} to possibly decorate
    * @return true if this decorator should be applied to the provided day
    */
-  boolean shouldDecorate(CalendarDay day);
+  boolean shouldDecorate(DayView dayView);
 
   /**
    * Set decoration options onto a facade to be applied to all relevant days

@@ -5,10 +5,12 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayView;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.sample.R;
+
 import java.util.HashSet;
 
 /**
@@ -30,7 +32,8 @@ public class RangeDayDecorator implements DayViewDecorator {
   }
 
   @Override
-  public boolean shouldDecorate(CalendarDay day) {
+  public boolean shouldDecorate(DayView dayView) {
+      CalendarDay day = dayView.getDate();
       if (firstDay != null && lastDay != null) {
         Log.d("wy2", "shouldDecorate: day=" + day + ", firstDay=" + firstDay + ", lastDay=" + lastDay);
           return (day.getDate().isAfter(firstDay.getDate()) || day.getDate().isEqual(firstDay.getDate()))
