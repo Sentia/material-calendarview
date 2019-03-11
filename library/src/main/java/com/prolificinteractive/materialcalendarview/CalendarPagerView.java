@@ -280,7 +280,7 @@ abstract class CalendarPagerView extends ViewGroup
 
     //The spec width should be a correct multiple
     final int measureTileWidth = specWidthSize / DEFAULT_DAYS_IN_WEEK;
-    final int measureTileHeight = specHeightSize / getRows();
+    final int measureTileHeight = (int)convertDpToPixel(40, getContext()); // todo weiyi passed by constructor
 
     //Just use the spec sizes
     setMeasuredDimension(specWidthSize, specHeightSize);
