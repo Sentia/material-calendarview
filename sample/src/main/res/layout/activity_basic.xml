@@ -14,7 +14,7 @@
   <com.prolificinteractive.materialcalendarview.MaterialCalendarView
       android:id="@+id/calendarView"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="match_parent"
       app:mcv_tileHeight="40dp"
       app:mcv_showWeekDays="false"
       app:mcv_selectionMode="range"

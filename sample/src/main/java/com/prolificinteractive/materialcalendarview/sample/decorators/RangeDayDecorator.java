@@ -47,7 +47,9 @@ public class RangeDayDecorator implements DayViewDecorator {
 
   @Override
   public void decorate(DayViewFacade view) {
-    view.setBackgroundDrawable(drawable);
+    //view.setBackgroundDrawable(drawable);
+    view.setRangeStart(true);
+    //view.setRangeEnd(true);
   }
 
   /**
