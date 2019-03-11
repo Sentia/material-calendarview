@@ -318,7 +318,7 @@ public class DayView extends AppCompatCheckedTextView {
       backgroundDrawable = generateRangeStartDrawable();
     } else if (facade.isRangeEnd()) {
       backgroundDrawable = generateRangeEndDrawable();
-    } else if (facade.isRagneMiddle()) {
+    } else if (facade.isRangeMiddle()) {
       backgroundDrawable = generateRangeMiddleDrawable();
     } else {
       backgroundDrawable = facade.getBackgroundDrawable();

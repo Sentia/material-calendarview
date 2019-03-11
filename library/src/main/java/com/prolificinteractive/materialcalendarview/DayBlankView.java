@@ -22,8 +22,10 @@ public class DayBlankView extends DayView {
 
   @Override
   void applyFacade(DayViewFacade facade) {
-    if (facade.isRagneMiddle()) {
+    if (facade.isRangeMiddle()) {
       setCustomBackground(generateRangeMiddleDrawable());
+    } else {
+      setCustomBackground(facade.getBackgroundDrawable());
     }
   }
 }

@@ -145,7 +145,7 @@ public class DayViewFacade {
     return this.isRangeStart;
   }
 
-  boolean isRagneMiddle() {
+  boolean isRangeMiddle() {
     return this.isRangeMiddle;
   }
 
