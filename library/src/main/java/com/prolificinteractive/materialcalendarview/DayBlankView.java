@@ -9,8 +9,15 @@ import android.view.View;
 @SuppressLint("ViewConstructor")
 public class DayBlankView extends DayView {
 
-  public DayBlankView(Context context, CalendarDay day) {
+  public BlankPosition blankPosition;
+
+  public enum BlankPosition {
+    HEAD, TAIL
+  }
+
+  public DayBlankView(Context context, CalendarDay day, BlankPosition position) {
     super(context, day);
+    this.blankPosition = position;
   }
 
   @Override

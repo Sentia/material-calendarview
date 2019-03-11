@@ -111,9 +111,9 @@ abstract class CalendarPagerView extends ViewGroup
     addView(dayView, new LayoutParams());
   }
 
-  protected void addDayBlankView(List<DayView> dayViews, LocalDate temp) {
+  protected void addDayBlankView(List<DayView> dayViews, LocalDate temp, DayBlankView.BlankPosition position) {
     CalendarDay day = CalendarDay.from(temp);
-    DayView dayView = new DayBlankView(getContext(), day);
+    DayView dayView = new DayBlankView(getContext(), day, position);
     dayViews.add(dayView);
     addView(dayView, new LayoutParams());
   }

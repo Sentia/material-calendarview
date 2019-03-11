@@ -2,22 +2,18 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
-import java.util.Collection;
-import java.util.List;
-
-import android.util.Log;
 
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.temporal.WeekFields;
+
+import java.util.List;
 
 /**
  * Display a month of {@linkplain DayView}s and
  * seven {@linkplain WeekDayView}s.
  */
 @SuppressLint("ViewConstructor") class MonthView extends CalendarPagerView {
-  private static final String TAG = "MonthView";
-
   public MonthView(
       @NonNull final MaterialCalendarView view,
       final CalendarDay month,
@@ -47,10 +43,10 @@ import org.threeten.bp.temporal.WeekFields;
         if (isOtherMonth) {
           if (blankDayIndex < blankDayCount) {
             if (temp.isBefore(firstDate)) {
-              addDayBlankView(dayViews, firstDate);
+              addDayBlankView(dayViews, firstDate, DayBlankView.BlankPosition.HEAD);
               blankDayIndex++;
             } else if (temp.isAfter(lastDate)) {
-              addDayBlankView(dayViews, lastDate);
+              addDayBlankView(dayViews, lastDate, DayBlankView.BlankPosition.TAIL);
               blankDayIndex++;
             }
           }
