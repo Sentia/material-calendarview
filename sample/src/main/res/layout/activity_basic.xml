@@ -16,6 +16,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       app:mcv_tileHeight="40dp"
+      app:mcv_tileVerticalMargin="5dp"
       app:mcv_showWeekDays="false"
       app:mcv_selectionMode="range"
       />

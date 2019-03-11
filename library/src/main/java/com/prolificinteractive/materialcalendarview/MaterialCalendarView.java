@@ -235,6 +235,7 @@ public class MaterialCalendarView extends ViewGroup {
   private int accentColor = 0;
   private int tileHeight = INVALID_TILE_DIMENSION;
   private int tileWidth = INVALID_TILE_DIMENSION;
+  private int tileVerticalMargin = INVALID_TILE_DIMENSION;
   @SelectionMode
   private int selectionMode = SELECTION_MODE_SINGLE;
   private boolean allowClickDaysOutsideCurrentMonth = true;
@@ -341,6 +342,14 @@ public class MaterialCalendarView extends ViewGroup {
         setTileHeight(tileHeight);
       }
 
+      final int tileVerticalMargin = a.getLayoutDimension(
+          R.styleable.MaterialCalendarView_mcv_tileVerticalMargin,
+          INVALID_TILE_DIMENSION
+      );
+      if (tileVerticalMargin > INVALID_TILE_DIMENSION) {
+        setTileVerticalMargin(tileVerticalMargin);
+      }
+
       setLeftArrow(
           a.getResourceId(
               R.styleable.MaterialCalendarView_mcv_leftArrow,
@@ -407,7 +416,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     if (isInEditMode()) {
       removeView(pager);
-      MonthView monthView = new MonthView(this, currentMonth, getFirstDayOfWeek(), true, true);
+      MonthView monthView = new MonthView(this, currentMonth, getFirstDayOfWeek(), true, true, -1, -1);
       monthView.setSelectionColor(getSelectionColor());
       monthView.setDateTextAppearance(adapter.getDateTextAppearance());
       monthView.setWeekDayTextAppearance(adapter.getWeekDayTextAppearance());
@@ -420,7 +429,7 @@ public class MaterialCalendarView extends ViewGroup {
     addView(topbar);
 
     pager.setId(R.id.mcv_pager);
-    pager.setOffscreenPageLimit(3);
+    pager.setOffscreenPageLimit(12);
     int tileHeight = getWeekCountBasedOnMode() +
             (showMonthTitle ? MONTH_TITLE_ROW : 0) +
             (showWeekDays ? DAY_NAMES_ROW : 0);
@@ -595,6 +604,19 @@ public class MaterialCalendarView extends ViewGroup {
    */
   public void setTileWidthDp(int tileWidthDp) {
     setTileWidth(dpToPx(tileWidthDp));
+  }
+
+  public int getTileVerticalMargin() {
+    return tileVerticalMargin;
+  }
+
+  public void setTileVerticalMargin(int tileVerticalMargin) {
+    this.tileVerticalMargin = tileVerticalMargin;
+    requestLayout();
+  }
+
+  public void setTileVerticalMarginDp(int tileVerticalMarginDp) {
+    setTileVerticalMargin(dpToPx(tileVerticalMarginDp));
   }
 
   private int dpToPx(int dp) {
@@ -1633,8 +1655,12 @@ public class MaterialCalendarView extends ViewGroup {
           MeasureSpec.EXACTLY
       );
 
+      int verticalMargin = 0;
+      if (tileVerticalMargin > 0) {
+        verticalMargin = tileVerticalMargin;
+      }
       int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
-          p.height * measureTileHeight, // todo weiyi p.height * (measureTileHeight + margin)
+          p.height * (measureTileHeight + verticalMargin),
           MeasureSpec.EXACTLY
       );
 

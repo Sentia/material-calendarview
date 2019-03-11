@@ -19,8 +19,10 @@ import java.util.List;
       @NonNull final MaterialCalendarView view,
       final CalendarDay firstViewDay,
       final DayOfWeek firstDayOfWeek,
-      final boolean showWeekDays) {
-    super(view, firstViewDay, firstDayOfWeek, false, showWeekDays);
+      final boolean showWeekDays,
+      int titleHeight,
+      int titleVerticalMargin) {
+    super(view, firstViewDay, firstDayOfWeek, false, showWeekDays, titleHeight, titleVerticalMargin);
   }
 
   @Override protected void buildDayViews(

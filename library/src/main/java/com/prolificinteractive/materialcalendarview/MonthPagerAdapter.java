@@ -13,7 +13,7 @@ class MonthPagerAdapter extends CalendarPagerAdapter<MonthView> {
   }
 
   @Override protected MonthView createView(int position) {
-    return new MonthView(mcv, getItem(position), mcv.getFirstDayOfWeek(), showMonthTitle, showWeekDays);
+    return new MonthView(mcv, getItem(position), mcv.getFirstDayOfWeek(), showMonthTitle, showWeekDays, mcv.getTileHeight(), mcv.getTileVerticalMargin());
   }
 
   @Override protected int indexOf(MonthView view) {

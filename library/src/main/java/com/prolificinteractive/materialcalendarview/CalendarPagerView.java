@@ -46,6 +46,8 @@ abstract class CalendarPagerView extends ViewGroup
   private CalendarDay maxDate = null;
   protected boolean showWeekDays;
   protected boolean showMonthTitle;
+  private final int tileHeight;
+  private final int tileVerticalMargin;
 
   private final List<DayView> dayViews = new ArrayList<>();
 
@@ -54,7 +56,9 @@ abstract class CalendarPagerView extends ViewGroup
       CalendarDay firstViewDay,
       DayOfWeek firstDayOfWeek,
       boolean showMonthTitle,
-      boolean showWeekDays) {
+      boolean showWeekDays,
+      int tileHeight,
+      int tileVerticalMargin) {
     super(view.getContext());
 
     this.mcv = view;
@@ -62,6 +66,8 @@ abstract class CalendarPagerView extends ViewGroup
     this.firstDayOfWeek = firstDayOfWeek;
     this.showMonthTitle = showMonthTitle;
     this.showWeekDays = showWeekDays;
+    this.tileHeight = tileHeight;
+    this.tileVerticalMargin = tileVerticalMargin;
 
     setClipChildren(false);
     setClipToPadding(false);
@@ -220,7 +226,7 @@ abstract class CalendarPagerView extends ViewGroup
     postInvalidate();
   }
 
-  protected void invalidateDecorators() { // todo weiyi
+  protected void invalidateDecorators() {
     final DayViewFacade facadeAccumulator = new DayViewFacade();
     for (DayView dayView : dayViews) {
       facadeAccumulator.reset();
@@ -280,7 +286,12 @@ abstract class CalendarPagerView extends ViewGroup
 
     //The spec width should be a correct multiple
     final int measureTileWidth = specWidthSize / DEFAULT_DAYS_IN_WEEK;
-    final int measureTileHeight = (int)convertDpToPixel(40, getContext()); // todo weiyi passed by constructor
+    final int measureTileHeight;
+    if (tileHeight > 0) {
+      measureTileHeight = tileHeight;
+    } else {
+      measureTileHeight = specHeightSize / getRows();
+    }
 
     //Just use the spec sizes
     setMeasuredDimension(specWidthSize, specHeightSize);
@@ -329,7 +340,10 @@ abstract class CalendarPagerView extends ViewGroup
     int childTop = 0;
     int childLeft = parentLeft;
     int childRight = parentRight;
-    int weekLineTopMargin = (int)convertDpToPixel(5, getContext()); // todo weiyi added to attr
+    int verticalMargin = 0;
+    if (tileVerticalMargin > 0) {
+      verticalMargin = tileVerticalMargin;
+    }
 
     int i = 0;
 
@@ -339,7 +353,7 @@ abstract class CalendarPagerView extends ViewGroup
       final int height = child.getMeasuredHeight();
       final int leftPadding = (int)convertDpToPixel(DEFAULT_MONTH_TITLE_LEFT_PADDING, getContext());
       child.layout(leftPadding, childTop, parentWidth, childTop + height);
-      childTop += height + weekLineTopMargin;
+      childTop += height + verticalMargin;
       i++;
     }
 
@@ -361,7 +375,7 @@ abstract class CalendarPagerView extends ViewGroup
       if ((showMonthTitle ? (i-1) : i) % DEFAULT_DAYS_IN_WEEK == (DEFAULT_DAYS_IN_WEEK - 1)) {
         childLeft = parentLeft;
         childRight = parentRight;
-        childTop += height + weekLineTopMargin;
+        childTop += height + verticalMargin;
       }
     }
   }

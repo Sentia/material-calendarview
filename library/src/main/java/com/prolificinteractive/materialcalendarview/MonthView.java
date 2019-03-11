@@ -23,14 +23,15 @@ import org.threeten.bp.temporal.WeekFields;
       final CalendarDay month,
       final DayOfWeek firstDayOfWeek,
       final boolean showMonthTitle,
-      final boolean showWeekDays) {
-    super(view, month, firstDayOfWeek, showMonthTitle, showWeekDays);
+      final boolean showWeekDays,
+      int titleHeight,
+      int titleVerticalMargin) {
+    super(view, month, firstDayOfWeek, showMonthTitle, showWeekDays, titleHeight, titleVerticalMargin);
   }
 
   @Override protected void buildDayViews(
       final List<DayView> dayViews,
       final LocalDate calendar) {
-    Log.d(TAG, "month=" + this.getFirstViewDay() + ", week count=" + getWeekCount() + ", day count=" + getDayCount());// todo weiyi to delete
     LocalDate temp = calendar;
     LocalDate firstDate = getFirstDate();
     LocalDate lastDate = getLastDate();
@@ -59,13 +60,6 @@ import org.threeten.bp.temporal.WeekFields;
         temp = temp.plusDays(1);
       }
     }
-
-    StringBuilder result = new StringBuilder();// todo weiyi to delete
-    for (DayView dayView : dayViews) {
-      result.append(dayView.getDate().toString());
-      result.append("  ,  ");
-    }
-    Log.d("wy2", "dayViews: " + result);
   }
 
   public CalendarDay getMonth() {
