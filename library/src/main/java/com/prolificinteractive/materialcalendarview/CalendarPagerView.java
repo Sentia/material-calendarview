@@ -329,6 +329,7 @@ abstract class CalendarPagerView extends ViewGroup
     int childTop = 0;
     int childLeft = parentLeft;
     int childRight = parentRight;
+    int weekLineTopMargin = (int)convertDpToPixel(5, getContext());
 
     int i = 0;
 
@@ -338,7 +339,7 @@ abstract class CalendarPagerView extends ViewGroup
       final int height = child.getMeasuredHeight();
       final int leftPadding = (int)convertDpToPixel(DEFAULT_MONTH_TITLE_LEFT_PADDING, getContext());
       child.layout(leftPadding, childTop, parentWidth, childTop + height);
-      childTop += height;
+      childTop += height + weekLineTopMargin;
       i++;
     }
 
@@ -360,7 +361,7 @@ abstract class CalendarPagerView extends ViewGroup
       if ((showMonthTitle ? (i-1) : i) % DEFAULT_DAYS_IN_WEEK == (DEFAULT_DAYS_IN_WEEK - 1)) {
         childLeft = parentLeft;
         childRight = parentRight;
-        childTop += height;
+        childTop += height + weekLineTopMargin;
       }
     }
   }
