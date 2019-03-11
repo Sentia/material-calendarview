@@ -420,7 +420,7 @@ public class MaterialCalendarView extends ViewGroup {
     addView(topbar);
 
     pager.setId(R.id.mcv_pager);
-    pager.setOffscreenPageLimit(2);
+    pager.setOffscreenPageLimit(3);
     int tileHeight = calendarMode.visibleWeeksCount +
             (showMonthTitle ? MONTH_TITLE_ROW : 0) +
             (showWeekDays ? DAY_NAMES_ROW : 0);
