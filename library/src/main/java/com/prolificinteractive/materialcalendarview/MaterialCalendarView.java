@@ -420,7 +420,7 @@ public class MaterialCalendarView extends ViewGroup {
     addView(topbar);
 
     pager.setId(R.id.mcv_pager);
-    pager.setOffscreenPageLimit(1);
+    pager.setOffscreenPageLimit(2);
     int tileHeight = calendarMode.visibleWeeksCount +
             (showMonthTitle ? MONTH_TITLE_ROW : 0) +
             (showWeekDays ? DAY_NAMES_ROW : 0);
@@ -1136,8 +1136,8 @@ public class MaterialCalendarView extends ViewGroup {
     if (min != null) {
       currentMonth = min.isAfter(currentMonth) ? min : currentMonth;
     }
-    int position = adapter.getIndexForDay(c);
-    pager.setCurrentItem(position, false);
+    //int position = adapter.getIndexForDay(c);
+    //pager.setCurrentItem(position, false);
     updateUi();
   }
 
