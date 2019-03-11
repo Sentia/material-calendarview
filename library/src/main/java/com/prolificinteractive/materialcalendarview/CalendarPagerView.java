@@ -47,7 +47,7 @@ abstract class CalendarPagerView extends ViewGroup
   protected boolean showWeekDays;
   protected boolean showMonthTitle;
 
-  private final Collection<DayView> dayViews = new ArrayList<>();
+  private final List<DayView> dayViews = new ArrayList<>();
 
   public CalendarPagerView(
       @NonNull MaterialCalendarView view,
@@ -96,7 +96,7 @@ abstract class CalendarPagerView extends ViewGroup
     }
   }
 
-  protected void addDayView(Collection<DayView> dayViews, LocalDate temp) {
+  protected void addDayView(List<DayView> dayViews, LocalDate temp) {
     CalendarDay day = CalendarDay.from(temp);
     DayView dayView = new DayView(getContext(), day);
     dayView.setOnClickListener(this);
@@ -105,6 +105,12 @@ abstract class CalendarPagerView extends ViewGroup
     addView(dayView, new LayoutParams());
   }
 
+  protected void addDayBlankView(List<DayView> dayViews, LocalDate temp) {
+    CalendarDay day = CalendarDay.from(temp);
+    DayView dayView = new DayBlankView(getContext(), day);
+    dayViews.add(dayView);
+    addView(dayView, new LayoutParams());
+  }
   protected LocalDate resetAndGetWorkingCalendar() {
     final TemporalField firstDayOfWeek = WeekFields.of(this.firstDayOfWeek, 1).dayOfWeek();
     final LocalDate temp = getFirstViewDay().getDate().with(firstDayOfWeek, 1);
@@ -122,7 +128,7 @@ abstract class CalendarPagerView extends ViewGroup
     return firstDayOfWeek;
   }
 
-  protected abstract void buildDayViews(Collection<DayView> dayViews, LocalDate calendar);
+  protected abstract void buildDayViews(List<DayView> dayViews, LocalDate calendar);
 
   protected abstract boolean isDayEnabled(CalendarDay day);
 
@@ -214,7 +220,7 @@ abstract class CalendarPagerView extends ViewGroup
     postInvalidate();
   }
 
-  protected void invalidateDecorators() {
+  protected void invalidateDecorators() { // todo weiyi
     final DayViewFacade facadeAccumulator = new DayViewFacade();
     for (DayView dayView : dayViews) {
       facadeAccumulator.reset();

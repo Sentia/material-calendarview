@@ -146,9 +146,9 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
     return date;
   }
 
-  private void setEnabled() {
+  protected void setEnabled() {
     boolean enabled = isInMonth && isInRange && !isDecoratedDisabled;
-    super.setEnabled(isInRange && !isDecoratedDisabled);
+    super.setEnabled(enabled);
 
     boolean showOtherMonths = showOtherMonths(showOtherDates);
     boolean showOutOfRange = showOutOfRange(showOtherDates) || showOtherMonths;

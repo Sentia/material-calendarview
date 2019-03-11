@@ -7,6 +7,7 @@ import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Display a week of {@linkplain DayView}s and
@@ -23,7 +24,7 @@ import java.util.Collection;
   }
 
   @Override protected void buildDayViews(
-      final Collection<DayView> dayViews,
+      final List<DayView> dayViews,
       final LocalDate calendar) {
     LocalDate temp = calendar;
     for (int i = 0; i < DEFAULT_DAYS_IN_WEEK; i++) {

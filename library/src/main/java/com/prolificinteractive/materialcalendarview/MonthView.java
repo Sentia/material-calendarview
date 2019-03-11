@@ -3,14 +3,20 @@ package com.prolificinteractive.materialcalendarview;
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import java.util.Collection;
+import java.util.List;
+
+import android.util.Log;
+
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.temporal.WeekFields;
 
 /**
  * Display a month of {@linkplain DayView}s and
  * seven {@linkplain WeekDayView}s.
  */
 @SuppressLint("ViewConstructor") class MonthView extends CalendarPagerView {
+  private static final String TAG = "MonthView";
 
   public MonthView(
       @NonNull final MaterialCalendarView view,
@@ -22,15 +28,44 @@ import org.threeten.bp.LocalDate;
   }
 
   @Override protected void buildDayViews(
-      final Collection<DayView> dayViews,
+      final List<DayView> dayViews,
       final LocalDate calendar) {
+    Log.d(TAG, "month=" + this.getFirstViewDay() + ", week count=" + getWeekCount() + ", day count=" + getDayCount());// todo weiyi to delete
     LocalDate temp = calendar;
+    LocalDate firstDate = getFirstDate();
+    LocalDate lastDate = getLastDate();
+    int weekCount = getWeekCount();
+    int dayCount = getDayCount();
+    int blankDayCount = weekCount * DEFAULT_DAYS_IN_WEEK - dayCount;
+    int blankDayIndex = 0;
     for (int r = 0; r < DEFAULT_MAX_WEEKS; r++) {
       for (int i = 0; i < DEFAULT_DAYS_IN_WEEK; i++) {
-        addDayView(dayViews, temp);
+        CalendarDay day = CalendarDay.from(temp);
+        // added a blank day view if the day is in other month to support blank selection, but ShowOtherDates won't be working.
+        boolean isOtherMonth = day.getMonth() != getFirstViewDay().getMonth();
+        if (isOtherMonth) {
+          if (blankDayIndex < blankDayCount) {
+            if (temp.isBefore(firstDate)) {
+              addDayBlankView(dayViews, firstDate);
+              blankDayIndex++;
+            } else if (temp.isAfter(lastDate)) {
+              addDayBlankView(dayViews, lastDate);
+              blankDayIndex++;
+            }
+          }
+        } else {
+          addDayView(dayViews, temp);
+        }
         temp = temp.plusDays(1);
       }
     }
+
+    StringBuilder result = new StringBuilder();// todo weiyi to delete
+    for (DayView dayView : dayViews) {
+      result.append(dayView.getDate().toString());
+      result.append("  ,  ");
+    }
+    Log.d("wy2", "dayViews: " + result);
   }
 
   public CalendarDay getMonth() {
@@ -42,8 +77,26 @@ import org.threeten.bp.LocalDate;
   }
 
   @Override protected int getRows() {
-    return DEFAULT_MAX_WEEKS +
+    return getWeekCount() +
             (showMonthTitle ? MONTH_TITLE_ROW : 0) +
             (showWeekDays ? DAY_NAMES_ROW : 0);
+  }
+
+  // return week count of this month
+  private int getWeekCount() {
+    return getLastDate().get(WeekFields.of(getFirstDayOfWeek(), 1).weekOfMonth());
+  }
+
+  // return day count of this month
+  private int getDayCount() {
+    return getFirstViewDay().getDate().lengthOfMonth();
+  }
+
+  private LocalDate getFirstDate() {
+    return getFirstViewDay().getDate();
+  }
+
+  private LocalDate getLastDate() {
+    return getFirstDate().withDayOfMonth(getDayCount());
   }
 }
