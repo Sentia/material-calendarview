@@ -421,7 +421,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     pager.setId(R.id.mcv_pager);
     pager.setOffscreenPageLimit(3);
-    int tileHeight = calendarMode.visibleWeeksCount +
+    int tileHeight = getWeekCountBasedOnMode() +
             (showMonthTitle ? MONTH_TITLE_ROW : 0) +
             (showWeekDays ? DAY_NAMES_ROW : 0);
     addView(pager, new LayoutParams(tileHeight));
@@ -1634,7 +1634,7 @@ public class MaterialCalendarView extends ViewGroup {
       );
 
       int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
-          p.height * measureTileHeight,
+          p.height * measureTileHeight, // todo weiyi p.height * (measureTileHeight + margin)
           MeasureSpec.EXACTLY
       );
 
@@ -2001,7 +2001,7 @@ public class MaterialCalendarView extends ViewGroup {
     setRangeDates(minDate, maxDate);
 
     // Reset height params after mode change
-    int tileHeight = calendarMode.visibleWeeksCount +
+    int tileHeight = getWeekCountBasedOnMode() +
             (showMonthTitle ? MONTH_TITLE_ROW : 0) +
             (showWeekDays ? DAY_NAMES_ROW : 0);
 
