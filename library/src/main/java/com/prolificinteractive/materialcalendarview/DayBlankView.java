@@ -15,6 +15,7 @@ public class DayBlankView extends DayView {
   @Override
   protected void setEnabled() {
     super.setEnabled();
+    setEnabled(false);
     setVisibility(View.VISIBLE);
     setTextColor(Color.TRANSPARENT);
     setSelectionColor(Color.TRANSPARENT);
