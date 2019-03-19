@@ -1437,9 +1437,10 @@ public class MaterialCalendarView extends ViewGroup {
             adapter.setDateSelected(date, nowSelected);
             dispatchOnDateSelected(date, nowSelected);
           } else if (firstDaySelected.isAfter(date)) {
-            // Selecting a range, dispatching in reverse order...
-            adapter.selectRange(date, firstDaySelected);
-            dispatchOnRangeSelected(adapter.getSelectedDates());
+            // Selecting the first date of a range
+            adapter.setDateSelected(firstDaySelected, false);
+            adapter.setDateSelected(date, nowSelected);
+            dispatchOnDateSelected(date, nowSelected);
           } else {
             // Selecting a range, dispatching in order...
             adapter.selectRange(firstDaySelected, date);
