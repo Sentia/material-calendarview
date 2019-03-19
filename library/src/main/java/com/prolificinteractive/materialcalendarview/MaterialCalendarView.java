@@ -1469,17 +1469,26 @@ public class MaterialCalendarView extends ViewGroup {
    *
    * @param firstDay first day of the range to select
    * @param lastDay last day of the range to select
+   * @param shouldDispatch don't dispatchOnRangeSelected, especially useful when init the range selection.
    */
-  public void selectRange(final CalendarDay firstDay, final CalendarDay lastDay) {
+  public void selectRange(final CalendarDay firstDay, final CalendarDay lastDay, boolean shouldDispatch) {
     if (firstDay == null || lastDay == null) {
       return;
     } else if (firstDay.isAfter(lastDay)) {
       adapter.selectRange(lastDay, firstDay);
-      dispatchOnRangeSelected(adapter.getSelectedDates());
+      if (shouldDispatch) {
+        dispatchOnRangeSelected(adapter.getSelectedDates());
+      }
     } else {
       adapter.selectRange(firstDay, lastDay);
-      dispatchOnRangeSelected(adapter.getSelectedDates());
+      if (shouldDispatch) {
+        dispatchOnRangeSelected(adapter.getSelectedDates());
+      }
     }
+  }
+
+  public void selectRange(final CalendarDay firstDay, final CalendarDay lastDay) {
+    selectRange(firstDay, lastDay, true);
   }
 
   /**
