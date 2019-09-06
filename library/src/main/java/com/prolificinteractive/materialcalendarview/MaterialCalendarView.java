@@ -216,6 +216,7 @@ public class MaterialCalendarView extends ViewGroup {
 
         @Override
         public void onPageScrollStateChanged(int state) {
+          dispatchOnScrollStateChanged(state);
         }
 
         @Override
@@ -230,6 +231,7 @@ public class MaterialCalendarView extends ViewGroup {
   private OnDateLongClickListener longClickListener;
   private OnMonthChangedListener monthListener;
   private OnRangeSelectedListener rangeListener;
+  private OnCalendarScrollStateChanged scrollStateChangedListener;
 
   CharSequence calendarContentDescription;
   private int accentColor = 0;
@@ -1365,6 +1367,10 @@ public class MaterialCalendarView extends ViewGroup {
     this.rangeListener = listener;
   }
 
+  public void setOnCalendarScrollStateChanged(OnCalendarScrollStateChanged listener) {
+    this.scrollStateChangedListener = listener;
+  }
+
   /**
    * Add listener to the title or null to remove it.
    *
@@ -1405,6 +1411,12 @@ public class MaterialCalendarView extends ViewGroup {
   protected void dispatchOnMonthChanged(final CalendarDay day) {
     if (monthListener != null) {
       monthListener.onMonthChanged(MaterialCalendarView.this, day);
+    }
+  }
+
+  protected void dispatchOnScrollStateChanged(final int state) {
+    if (scrollStateChangedListener != null) {
+      scrollStateChangedListener.onCalendarScrollStateChanged(state);
     }
   }
 
