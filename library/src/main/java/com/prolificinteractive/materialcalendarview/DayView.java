@@ -8,12 +8,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import android.graphics.drawable.shapes.RectShape;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatCheckedTextView;
@@ -193,13 +191,6 @@ public class DayView extends AppCompatCheckedTextView {
   private final Rect tempRect = new Rect();
   private final Rect circleDrawableRect = new Rect();
 
-  public Rect getCircleDrawableRect() {
-    return circleDrawableRect;
-  }
-
-  public Rect getBackgroundRect() {
-    return tempRect;
-  }
   @Override
   protected void onDraw(@NonNull Canvas canvas) {
     if (customBackground != null) {
@@ -246,12 +237,6 @@ public class DayView extends AppCompatCheckedTextView {
     return drawable;
   }
 
-  private static Drawable generateRectDrawable(final int color) {
-    ShapeDrawable drawable = new ShapeDrawable(new RectShape());
-    drawable.getPaint().setColor(color);
-    return drawable;
-  }
-
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   private static Drawable generateRippleDrawable(final int color, Rect bounds) {
     ColorStateList list = ColorStateList.valueOf(color);
@@ -271,59 +256,13 @@ public class DayView extends AppCompatCheckedTextView {
     return rippleDrawable;
   }
 
-  private Drawable generateRangeStartDrawable() {
-    Drawable circleDrawable = generateCircleDrawable(0xffee3524); // todo weiyi add to attr
-    circleDrawable.setBounds(circleDrawableRect);
-
-    Drawable rectDrawable = generateRectDrawable(0xfff37165);
-    Rect rect = new Rect((tempRect.right + tempRect.left)/2, tempRect.top, tempRect.right, tempRect.bottom);
-    rectDrawable.setBounds(rect);
-
-    Drawable[] layers = new Drawable[] { rectDrawable, circleDrawable };
-    LayerDrawable layerDrawable = new LayerDrawable(layers);
-
-    return layerDrawable;
-  }
-
-  private Drawable generateRangeEndDrawable() {
-    Drawable circleDrawable = generateCircleDrawable(0xffee3524);
-    circleDrawable.setBounds(circleDrawableRect);
-
-    Drawable rectDrawable = generateRectDrawable(0xfff37165);
-    Rect rect = new Rect(tempRect.left, tempRect.top, (tempRect.right + tempRect.left)/2, tempRect.bottom);
-    rectDrawable.setBounds(rect);
-
-    Drawable[] layers = new Drawable[] { rectDrawable, circleDrawable };
-    LayerDrawable layerDrawable = new LayerDrawable(layers);
-
-    return layerDrawable;
-  }
-
-  protected Drawable generateRangeMiddleDrawable() {
-    Drawable rectDrawable = generateRectDrawable(0xfff37165);
-    rectDrawable.setBounds(tempRect);
-    return rectDrawable;
-  }
-
   /**
    * @param facade apply the facade to us
    */
   void applyFacade(DayViewFacade facade) {
     this.isDecoratedDisabled = facade.areDaysDisabled();
     setEnabled();
-
-    Drawable backgroundDrawable;
-    // background of range start/end are highly rely on DayView's Rect, and xml drawable will be stretched, so create it programmatically.
-    if (facade.isRangeStart()) {
-      backgroundDrawable = generateRangeStartDrawable();
-    } else if (facade.isRangeEnd()) {
-      backgroundDrawable = generateRangeEndDrawable();
-    } else if (facade.isRangeMiddle()) {
-      backgroundDrawable = generateRangeMiddleDrawable();
-    } else {
-      backgroundDrawable = facade.getBackgroundDrawable();
-    }
-    setCustomBackground(backgroundDrawable);
+    setCustomBackground(facade.getBackgroundDrawable());
     setSelectionDrawable(facade.getSelectionDrawable());
 
     // Facade has spans
